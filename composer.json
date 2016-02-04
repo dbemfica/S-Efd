@@ -1,0 +1,20 @@
+{
+  "name": "dbemfica/s-efd",
+  "description": "Biblioteca para geração dos Blocos do sped-efd",
+  "license": "GNU",
+  "authors": [
+    {
+      "name": "Diogo Bemfica",
+      "email": "diogo.fragabemfica@gmail.com"
+    }
+  ],
+  "minimum-stability": "dev",
+  "require": {
+    "php": ">=5.3.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "SEfs\\": "src/SEfs/"
+    }
+  }
+}
