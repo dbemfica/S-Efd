@@ -96,6 +96,7 @@ class Efd
             $_0200->ALIQ_ICMS = $bloco->aliquotaIcms;
             $bloco0->add0200($_0200);
             $this->addBloco0($bloco0);
+            $bloco0->make0990();
         }
 
         try{

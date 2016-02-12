@@ -50,6 +50,10 @@ class Bloco0
         if( !empty($this->_0000) ) $QTD_LIN_0++;
         if( !empty($this->_0001) ) $QTD_LIN_0++;
         if( !empty($this->_0005) ) $QTD_LIN_0++;
+        if( !empty($this->_0015) ) $QTD_LIN_0++;
+        if( !empty($this->_0190) ) $QTD_LIN_0++;
+        if( !empty($this->_0200) ) $QTD_LIN_0 += count($this->_0200);
+
         $_0990 = new _0990();
         $_0990->QTD_LIN_0 = $QTD_LIN_0;
         $this->_0990 = $_0990;
