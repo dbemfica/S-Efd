@@ -52,12 +52,6 @@ class BlocoH
      */
     private $codigoServico;
 
-    /*
-     * Alíquota de ICMS aplicável ao item nas operações internas
-     * Atributo (Opcional)
-     * @param string
-     */
-    private $aliquotaIcms;
 
     /*
      * Tipo do item – Atividades Industriais, Comerciais e Serviços:
@@ -84,6 +78,14 @@ class BlocoH
      * @param string
      */
     private $unidade;
+
+    /*
+     * Descrição da unidade de medida
+     * Atributo (Obrigatório)
+     * @param string
+     */
+    private $unidadeDescricao;
+
 
     /*
      * Unidade de medida utilizada na quantificação de estoques.
@@ -151,6 +153,13 @@ class BlocoH
      * @param float (com 2 decimais)
      */
     private $valorItemImpostoRenda;
+
+    /*
+     * Alíquota de ICMS aplicável ao item nas operações internas
+     * Atributo (Opcional)
+     * @param string
+     */
+    private $aliquotaIcms;
 
 
     public function __get($atributo)

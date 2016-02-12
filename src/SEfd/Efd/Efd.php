@@ -77,6 +77,11 @@ class Efd
             $h010->VL_ITEM_IR = $bloco->valorItemImpostoRenda;
             $blocoH->addH010($h010);
 
+            $_0190 = new \SEfd\Efd\Bloco0\_0190();
+            $_0190->UNID = $bloco->unidade;
+            $_0190->DESCR = $bloco->unidadeDescricao;
+            $bloco0->add0190($_0190);
+
             $_0200 = new \SEfd\Efd\Bloco0\_0200();
             $_0200->COD_ITEM = $bloco->codigoItem;
             $_0200->DESCR_ITEM = $bloco->textoComplementar;
@@ -90,7 +95,6 @@ class Efd
             $_0200->COD_LST = $bloco->codigoServico;
             $_0200->ALIQ_ICMS = $bloco->aliquotaIcms;
             $bloco0->add0200($_0200);
-            //var_dump($bloco0);
             $this->addBloco0($bloco0);
         }
 
@@ -131,6 +135,13 @@ class Efd
             $this->file .= "|{$this->bloco0->_0001->REG}";
             $this->file .= "|{$this->bloco0->_0001->IND_MOV}";
             $this->file .= "|\r\n";
+
+            foreach( $this->bloco0->_0190 as $_0190 ){
+                $this->file .= "|{$_0190->REG}";
+                $this->file .= "|{$_0190->UNID}";
+                $this->file .= "|{$_0190->DESCR}";
+                $this->file .= "|\r\n";
+            }
 
             foreach( $this->bloco0->_0200 as $_0200 ){
                 $this->file .= "|{$_0200->REG}";

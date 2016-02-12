@@ -23,6 +23,7 @@ $sefd->motivoInventario = '01'; //SE FOR INFORMAR O BLOCO H
 $blocoH = new \SEfd\Writer\BlocoH();
 $blocoH->codigoItem = '1';
 $blocoH->unidade = 'UN';
+$blocoH->unidadeDescricao = 'Unidade';
 $blocoH->unidadeInventario = 'UN';
 $blocoH->quantidade = 10.000;
 $blocoH->valorUnitario = 9.900000;
@@ -30,8 +31,17 @@ $blocoH->valorItem = 99.90;
 $blocoH->indicadorPropriedade = 1;
 $blocoH->tipoItem = '01';
 $sefd->addBlocoH($blocoH);
-$sefd->addBlocoH($blocoH);
-$sefd->addBlocoH($blocoH);
+
+$blocoH = new \SEfd\Writer\BlocoH();
+$blocoH->codigoItem = '1';
+$blocoH->unidade = 'UN';
+$blocoH->unidadeDescricao = 'Unidade';
+$blocoH->unidadeInventario = 'UN';
+$blocoH->quantidade = 10.000;
+$blocoH->valorUnitario = 9.900000;
+$blocoH->valorItem = 99.90;
+$blocoH->indicadorPropriedade = 1;
+$blocoH->tipoItem = '01';
 $sefd->addBlocoH($blocoH);
 
 
