@@ -10,6 +10,7 @@ class Bloco0
     public $_0001;
     public $_0005;
     public $_0015;
+    public $_0200 = array();
     public $_0990;
 
     public function add0000(\SEfd\Efd\Bloco0\_0000 $_0000)
@@ -27,6 +28,10 @@ class Bloco0
     public function add0015(\SEfd\Efd\Bloco0\_0015 $_0015)
     {
         $this->_0015 = $_0015;
+    }
+    public function add0200(\SEfd\Efd\Bloco0\_0200 $_0200)
+    {
+        $this->_0200[] = $_0200;
     }
 
     /*

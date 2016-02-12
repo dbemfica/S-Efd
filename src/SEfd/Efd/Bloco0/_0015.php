@@ -43,19 +43,19 @@ class _0015
         switch($atributo){
             case 'REG':
                 if( $this->REG === '0001' ){
-                    throw new \InvalidArgumentException("O campo 'REG' tem que ter o valor '0001'");
+                    throw new \InvalidArgumentException("O campo '{$atributo}' tem que ter o valor '0001'");
                 }
                 break;
 
             case 'UF_ST':
                 if( strlen($valor) != 2 ){
-                    throw new \InvalidArgumentException("O campo 'UF_ST' só pode ter 2 caracteres");
+                    throw new \InvalidArgumentException("O campo '{$atributo}' só pode ter 2 caracteres");
                 }
                 break;
 
             case 'IE_ST':
                 if( strlen($valor) > 14 ){
-                    throw new \InvalidArgumentException("O campo 'IE_ST' não pode ter mais 14 caracteres");
+                    throw new \InvalidArgumentException("O campo '{$atributo}' não pode ter mais 14 caracteres");
                 }
                 break;
         }

@@ -160,7 +160,7 @@ class H010
                 break;
 
             case 'VL_ITEM_IR':
-                if( !is_numeric($valor) ){
+                if( $valor !== NULL && !is_numeric($valor) ){
                     throw new \InvalidArgumentException("O campo 'VL_ITEM_IR' precisa ser um número");
                 }
                 $v = explode(".",$valor);

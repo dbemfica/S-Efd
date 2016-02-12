@@ -22,16 +22,23 @@ class BlocoH
         $this->H005 = $H005;
     }
 
-    public function makeH005()
+    public function makeH005( $dt_inv = NULL, $mot_inv = NULL )
     {
+        if( empty($this->H010[0]) ){
+            throw new \Exception("Para usar a 'makeH005' o precisa existir intens no registro H010");
+        }
         $VL_INV = 0;
         foreach( $this->H010 as $h010 ){
             $VL_INV += $h010->VL_ITEM;
         }
+
+        $DT_INV = ( $dt_inv !== NULL )? $dt_inv: date("dmY");
+        $MOT_INV = ( $mot_inv !== NULL )? $mot_inv: '01';
+
         $h005 = new H005();
-        $h005->DT_INV = date("dmY");
+        $h005->DT_INV = $DT_INV;
         $h005->VL_INV = $VL_INV;
-        $h005->MOT_INV = '01';
+        $h005->MOT_INV = $MOT_INV;
         $this->addH005($h005);
     }
 

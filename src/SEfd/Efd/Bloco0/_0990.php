@@ -37,12 +37,12 @@ class _0990
         switch($atributo){
             case 'REG':
                 if( $this->REG === '0990' ){
-                    throw new \InvalidArgumentException("O campo 'REG' tem que ter o valor '0990'");
+                    throw new \InvalidArgumentException("O campo '{$atributo}' tem que ter o valor '0990'");
                 }
                 break;
             case 'QTD_LIN_0':
                 if( !is_int($valor) ){
-                    throw new \InvalidArgumentException("O campo 'QTD_LIN_0' só pode ter valores inteiros");
+                    throw new \InvalidArgumentException("O campo '{$atributo}' só pode ter valores inteiros");
                 }
                 break;
         }

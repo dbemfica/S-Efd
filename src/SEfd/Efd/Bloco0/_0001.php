@@ -39,12 +39,12 @@ class _0001
         switch($atributo){
             case 'REG':
                 if( $this->REG === '0001' ){
-                    throw new \InvalidArgumentException("O campo 'REG' tem que ter o valor '0001'");
+                    throw new \InvalidArgumentException("O campo '{$atributo}' tem que ter o valor '0001'");
                 }
                 break;
             case 'IND_MOV':
                 if( $valor !== 0 && $valor !== 1 ){
-                    throw new \InvalidArgumentException("O campo 'IND_MOV' só pode ter valores 0 ou 1");
+                    throw new \InvalidArgumentException("O campo '{$atributo}' só pode ter valores 0 ou 1");
                 }
                 break;
         }

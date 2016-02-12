@@ -34,6 +34,9 @@ class SEfd
     private $imEntidade;
     private $suframaEntidade;
 
+    //BLOCOS
+    private $blocoH = array();
+
     /*
      * Perfil de apresentação do arquivo fiscal;
      * A – Perfil A;
@@ -59,6 +62,17 @@ class SEfd
      */
     private $indicadorMovimento;
 
+    /*
+     * Informe o motivo do Inventário:
+     * 01 – No final no período;
+     * 02 – Na mudança de forma de tributação da mercadoria (ICMS);
+     * 03 – Na solicitação da baixa cadastral, paralisação temporária e outras situações;
+     * 04 – Na alteração de regime de pagamento – condição do contribuinte;
+     * 05 – Por determinação dos fiscos.
+     * Esse atributo só deve ser setado se for criar o BLOCO H
+     * @param string
+     */
+    private $motivoInventario;
 
 
     public function __get($atributo)
@@ -71,6 +85,11 @@ class SEfd
         $this->$atributo = $valor;
     }
 
+    public function addBlocoH(\SEfd\Writer\BlocoH $blocoH)
+    {
+        $this->blocoH[] = $blocoH;
+    }
+
     /*
      * Esse metodo faz a impressão do arquivo no formato TXT
      */
@@ -78,6 +97,7 @@ class SEfd
     {
         $efd = new Efd\Efd();
         $efd->makeBloco0($this);
+        if( !empty(($this->blocoH[0])) ) $efd->makeBlocoH($this);
         $efd->printTxt();
 //        echo "<pre>";
 //        print_r($efd);

@@ -125,67 +125,67 @@ class _0000
         switch($atributo){
             case 'REG':
                 if( $this->REG === '0000' ){
-                    throw new \InvalidArgumentException("O campo 'REG' tem que ter o valor '0000'");
+                    throw new \InvalidArgumentException("O campo '{$atributo}' tem que ter o valor '0000'");
                 }
                 break;
 
             case 'COD_FIN':
                 if( $valor !== 0 && $valor !== 1 ){
-                    throw new \InvalidArgumentException("O campo 'COD_FIN' só pode ter valores 0 ou 1");
+                    throw new \InvalidArgumentException("O campo '{$atributo}' só pode ter valores 0 ou 1");
                 }
                 break;
 
             case 'DT_INI':
                 if( strlen($valor) != 8 ){
-                    throw new \InvalidArgumentException("O campo 'DT_INI' só pode ter 8 caracteres");
+                    throw new \InvalidArgumentException("O campo '{$atributo}' só pode ter 8 caracteres");
                 }
                 break;
 
             case 'DT_FIN':
                 if( strlen($valor) != 8 ){
-                    throw new \InvalidArgumentException("O campo 'DT_FIN' só pode ter 8 caracteres");
+                    throw new \InvalidArgumentException("O campo '{$atributo}' só pode ter 8 caracteres");
                 }
                 break;
 
             case 'NOME':
                 if( strlen($valor) > 100 ){
-                    throw new \InvalidArgumentException("O campo 'NOME' não pode ter mais 100 caracteres");
+                    throw new \InvalidArgumentException("O campo '{$atributo}' não pode ter mais 100 caracteres");
                 }
                 break;
 
             case 'UF':
                 if( strlen($valor) != 2 ){
-                    throw new \InvalidArgumentException("O campo 'UF' só pode ter 2 caracteres");
+                    throw new \InvalidArgumentException("O campo '{$atributo}' só pode ter 2 caracteres");
                 }
                 break;
 
             case 'IE':
                 if( strlen($valor) > 14 ){
-                    throw new \InvalidArgumentException("O campo 'IE' não pode ter mais 14 caracteres");
+                    throw new \InvalidArgumentException("O campo '{$atributo}' não pode ter mais 14 caracteres");
                 }
                 break;
 
             case 'COD_MUN':
                 if( strlen($valor) > 7 ){
-                    throw new \InvalidArgumentException("O campo 'COD_MUN' não pode ter mais 7 caracteres");
+                    throw new \InvalidArgumentException("O campo '{$atributo}' não pode ter mais 7 caracteres");
                 }
                 break;
 
             case 'SUFRAMA':
                 if( strlen($valor) > 9 ){
-                    throw new \InvalidArgumentException("O campo 'SUFRAMA' não pode ter mais 9 caracteres");
+                    throw new \InvalidArgumentException("O campo '{$atributo}' não pode ter mais 9 caracteres");
                 }
                 break;
 
             case 'IND_PERFIL':
                 if( $valor != 'A' && $valor != 'B' && $valor != 'C' ){
-                    throw new \InvalidArgumentException("O campo 'COD_FIN' só pode ter valores A,B ou C");
+                    throw new \InvalidArgumentException("O campo '{$atributo}' só pode ter valores A,B ou C");
                 }
                 break;
 
             case 'IND_ATIV':
                 if( $valor !== 0 && $valor !== 1 ){
-                    throw new \InvalidArgumentException("O campo 'IND_ATIV' só pode ter valores 0 ou 1");
+                    throw new \InvalidArgumentException("O campo '{$atributo}' só pode ter valores 0 ou 1");
                 }
                 break;
         }

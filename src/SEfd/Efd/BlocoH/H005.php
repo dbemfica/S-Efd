@@ -12,7 +12,8 @@ class H005
 
     /*
      * Data do inventário
-     * @param float
+     * Exemplo: 01/01/2016 => 01012016
+     * @param string
      */
     private $DT_INV;
 
