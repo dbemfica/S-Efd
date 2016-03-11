@@ -101,71 +101,71 @@ class H010
         switch($atributo){
             case 'REG':
                 if( $this->REG === 'H010' ){
-                    throw new \InvalidArgumentException("O campo 'REG' tem que ter o valor 'H010'");
+                    throw new \InvalidArgumentException("O campo '{$atributo}' tem que ter o valor 'H010'");
                 }
                 break;
 
             case 'COD_ITEM':
                 if( strlen($valor) > 60 ){
-                    throw new \InvalidArgumentException("O campo 'COD_ITEM' não pode ter mais que 60 carácter");
+                    throw new \InvalidArgumentException("O campo '{$atributo}' não pode ter mais que 60 carácter");
                 }
                 break;
 
             case 'UNID':
                 if( strlen($valor) > 6 ){
-                    throw new \InvalidArgumentException("O campo 'UNID' não pode ter mais que 6 carácter");
+                    throw new \InvalidArgumentException("O campo '{$atributo}' não pode ter mais que 6 carácter");
                 }
                 break;
 
             case 'QTD':
                 if( !is_numeric($valor) ){
-                    throw new \InvalidArgumentException("O campo 'QTD' precisa ser um número");
+                    throw new \InvalidArgumentException("O campo '{$atributo}' precisa ser um número");
                 }
                 $v = explode(".",$valor);
                 if( isset($v[1]) && strlen($v[1]) > 3 ){
-                    throw new \InvalidArgumentException("O campo 'QTD' não pode ter um decimal maior que 3");
+                    throw new \InvalidArgumentException("O campo '{$atributo}' não pode ter um decimal maior que 3");
                 }
                 break;
 
             case 'VL_UNIT':
                 if( !is_numeric($valor) ){
-                    throw new \InvalidArgumentException("O campo 'VL_UNIT' precisa ser um número");
+                    throw new \InvalidArgumentException("O campo '{$atributo}' precisa ser um número");
                 }
                 $v = explode(".",$valor);
                 if( isset($v[1]) && strlen($v[1]) > 6 ){
-                    throw new \InvalidArgumentException("O campo 'VL_UNIT' não pode ter um decimal maior que 6");
+                    throw new \InvalidArgumentException("O campo '{$atributo}' não pode ter um decimal maior que 6");
                 }
                 break;
 
             case 'VL_ITEM':
                 if( !is_numeric($valor) ){
-                    throw new \InvalidArgumentException("O campo 'VL_ITEM' precisa ser um número");
+                    throw new \InvalidArgumentException("O campo '{$atributo}' precisa ser um número");
                 }
                 $v = explode(".",$valor);
                 if( isset($v[1]) && strlen($v[1]) > 2 ){
-                    throw new \InvalidArgumentException("O campo 'VL_ITEM' não pode ter um decimal maior que 2");
+                    throw new \InvalidArgumentException("O campo '{$atributo}' não pode ter um decimal maior que 2");
                 }
                 break;
 
             case 'IND_PROP':
                 if( $valor !== 0 && $valor !== 1 && $valor !== 2 ){
-                    throw new \InvalidArgumentException("O campo 'IND_PROP' está com o valor invalido");
+                    throw new \InvalidArgumentException("O campo '{$atributo}' está com o valor invalido");
                 }
                 break;
 
             case 'COD_PART':
                 if( strlen($valor) > 60 ){
-                    throw new \InvalidArgumentException("O campo 'COD_PART' não pode ter mais que 60 carácter");
+                    throw new \InvalidArgumentException("O campo '{$atributo}' não pode ter mais que 60 carácter");
                 }
                 break;
 
             case 'VL_ITEM_IR':
                 if( $valor !== NULL && !is_numeric($valor) ){
-                    throw new \InvalidArgumentException("O campo 'VL_ITEM_IR' precisa ser um número");
+                    throw new \InvalidArgumentException("O campo '{$atributo}' precisa ser um número");
                 }
                 $v = explode(".",$valor);
                 if( isset($v[1]) && strlen($v[1]) > 2 ){
-                    throw new \InvalidArgumentException("O campo 'VL_ITEM_IR' não pode ter um decimal maior que 2");
+                    throw new \InvalidArgumentException("O campo '{$atributo}' não pode ter um decimal maior que 2");
                 }
                 break;
         }

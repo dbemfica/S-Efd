@@ -12,16 +12,30 @@ class BlocoH
     public $H020;
     public $H990;
 
-    public function addH001(\SEfd\Efd\BlocoH\H001 $H001)
+    public function addH001(H001 $h001)
     {
-        $this->H001 = $H001;
+        $this->H001 = $h001;
+    }
+    public function addH005(H005 $h005)
+    {
+        $this->H005 = $h005;
+    }
+    public function addH010(H010 $h010)
+    {
+        //VALIDACAO DO IND_PROP
+        if( $h010->IND_PROP === 1 || $h010->IND_PROP === 2 && empty($h010->COD_PART) ){
+            throw new \InvalidArgumentException("Se indicadorPropriedade for preenchido com valor 1 ou 2 (propriedade de terceiros), o campo codigoParticipante será obrigatório.");
+        }
+        $this->H010[] = $h010;
+    }
+    public function addH020(H020 $h020)
+    {
+        $this->H020 = $h020;
     }
 
-    public function addH005(\SEfd\Efd\BlocoH\H005 $H005)
-    {
-        $this->H005 = $H005;
-    }
-
+    /*
+     * Essa função monta o registro H005
+     */
     public function makeH005( $dt_inv = NULL, $mot_inv = NULL )
     {
         if( empty($this->H010[0]) ){
@@ -37,19 +51,9 @@ class BlocoH
 
         $h005 = new H005();
         $h005->DT_INV = $DT_INV;
-        $h005->VL_INV = $VL_INV;
+        $h005->VL_INV = number_format($VL_INV, 2, ".", "");
         $h005->MOT_INV = $MOT_INV;
         $this->addH005($h005);
-    }
-
-    public function addH010(\SEfd\Efd\BlocoH\H010 $H010)
-    {
-        $this->H010[] = $H010;
-    }
-
-    public function addH020(\SEfd\Efd\BlocoH\H020 $H020)
-    {
-        $this->H020 = $H020;
     }
 
     /*
@@ -65,7 +69,5 @@ class BlocoH
         $h990 = new H990();
         $h990->QTD_LIN_H = $QTD_LIN_H;
         $this->H990 = $h990;
-
-
     }
 }
