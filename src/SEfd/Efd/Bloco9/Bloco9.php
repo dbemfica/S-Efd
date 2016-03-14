@@ -7,12 +7,12 @@ class Bloco9
     public $_9900 = array();
     public $_9990;
 
-    public function add9001(\SEfd\Efd\Bloco9\_9001 $_9001)
+    public function add9001(_9001 $_9001)
     {
         $this->_9001 = $_9001;
     }
 
-    public function add9900(\SEfd\Efd\Bloco9\_9900 $_9900)
+    public function add9900(_9900 $_9900)
     {
         $this->_9900[] = $_9900;
     }

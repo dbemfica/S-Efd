@@ -1,6 +1,8 @@
 <?php
 namespace SEfd\Efd\Bloco0;
 
+use \SEfd\Writer\DocumentoFiscal;
+use \SEfd\Writer\Item;
 /*
 * Abertura, Identificação e Referências
 */
@@ -47,7 +49,9 @@ class Bloco0
     }
     public function add0200(_0200 $_0200)
     {
-        $this->_0200[] = $_0200;
+        if( $this->validate0200($_0200) ){
+            $this->_0200[] = $_0200;
+        }
     }
     public function add0190(_0190 $_0190)
     {
@@ -67,7 +71,7 @@ class Bloco0
     /*
      * Essa função monta o registro 0150
      */
-    public function make0150(\SEfd\Writer\DocumentoFiscal $bloco)
+    public function make0150(DocumentoFiscal $bloco)
     {
         $_0150 = new _0150();
         $_0150->COD_PART = $bloco->codigoParticipanete;
@@ -100,6 +104,26 @@ class Bloco0
         $_0190->UNID = $unidade;
         $_0190->DESCR = $descricao;
         $this->add0190($_0190);
+    }
+
+    /*
+     * Essa função monta o registro 0200
+     */
+    public function make0200(Item $item)
+    {
+        $_0200 = new _0200();
+        $_0200->COD_ITEM = $item->codigoItem;
+        $_0200->DESCR_ITEM = $item->descricaoItem;
+        $_0200->COD_BARRA = $item->codigoBarra;
+        $_0200->COD_ANT_ITEM = $item->codigoAnteriorItem;
+        $_0200->UNID_INV = $item->unidade;
+        $_0200->TIPO_ITEM = $item->tipoItem;
+        $_0200->COD_NCM = $item->codigoNcm;
+        $_0200->EX_IPI = $item->codigoExcecaoNcm;
+        $_0200->COD_GEN = $item->codigoGeneroItem;
+        $_0200->COD_LST = $item->codigoServico;
+        $_0200->ALIQ_ICMS = $item->aliquotaIcms;
+        $this->add0200($_0200);
     }
 
     /*
@@ -159,19 +183,79 @@ class Bloco0
     /*
      * Esse metodo valida as informações presentes no Registro 0150
      */
-    public function validate0150(_0150 $_0510)
+    public function validate0150(_0150 $_0150)
     {
-        if( $_0510->COD_PAIS != 1058 && !empty($_0510->CNPJ) ){
+        //VERIFICA A DUBLICIDADE DO COD_PART
+        foreach ($this->_0150 as $registro) {
+            $COD_PART[] = $registro->COD_PART;
+        }
+        if (!empty($COD_PART)) {
+            if (in_array($_0150->COD_PART,$COD_PART)) {
+                return false;
+            }
+        }
+
+        if ($_0150->COD_PART == '') {
+            throw new \InvalidArgumentException("O 'codigoParticipanete' não pode ser vazio");
+        }
+
+        if($_0150->COD_PAIS != 1058 && $_0150->CNPJ != ''){
             throw new \InvalidArgumentException("Quando o 'codigoPais' é diferente de Brasil o CNPJ deve ficar vazio");
         }
 
-        if( $_0510->COD_PAIS != 1058 && !empty($_0510->CPF) ){
+        if($_0150->COD_PAIS != 1058 && $_0150->CPF != ''){
             throw new \InvalidArgumentException("Quando o 'codigoPais' é diferente de Brasil o CPF deve ficar vazio");
         }
 
-        if( $_0510->COD_PAIS != 1058 && !empty($_0510->COD_MUN) ){
+        if($_0150->COD_PAIS != 1058 && $_0150->COD_MUN != ''){
             throw new \InvalidArgumentException("Quando o 'codigoPais' é diferente de Brasil o codigoMunicipio deve ficar vazio ou com o valor '9999999”.'");
         }
+
+        if($_0150->COD_PAIS == 1058 && $_0150->COD_MUN == ''){
+            throw new \InvalidArgumentException("Quando o 'codigoPais' é igual o Brasil o codigoMunicipio não pode ficar vazio");
+        }
+
+        if($_0150->COD_PAIS == 1058 && $_0150->CNPJ == '' && $_0150->CPF == ''){
+            throw new \InvalidArgumentException("Quando o 'codigoPais' é igual o Brasil o CNPJ ou CPF devem ser preenchidos");
+        }
+
+        if($_0150->NOME == ''){
+            throw new \InvalidArgumentException("O campo Nome deve ser preenchidos");
+        }
+
+        if($_0150->END == ''){
+            throw new \InvalidArgumentException("O campo Endereco deve ser preenchidos");
+        }
+        return true;
+    }
+
+    /*
+     * Esse metodo valida as informações presentes no Registro 0200
+     */
+    public function validate0200(_0200 $_0200)
+    {
+        //VERIFICA A DUBLICIDADE DO COD_PART
+        foreach ($this->_0200 as $registro) {
+            $COD_ITEM[] = $registro->COD_ITEM;
+        }
+        if (!empty($COD_ITEM)) {
+            if (in_array($_0200->COD_ITEM,$COD_ITEM)) {
+                return false;
+            }
+        }
+
+        if($_0200->DESCR_ITEM == ''){
+            throw new \InvalidArgumentException("A 'descricaoItem' não pode estar vazia");
+        }
+
+        if($_0200->UNID_INV == ''){
+            throw new \InvalidArgumentException("A 'unidadeInventario' não pode estar vazia");
+        }
+
+        if($_0200->TIPO_ITEM == ''){
+            throw new \InvalidArgumentException("A 'tipoItem' não pode estar vazia");
+        }
+
         return true;
     }
 }

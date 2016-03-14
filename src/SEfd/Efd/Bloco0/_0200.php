@@ -133,7 +133,7 @@ class _0200
 
             case 'TIPO_ITEM':
                 $validar = ['00','01','02','03','04','05','06','07','08','09','10','99'];
-                if(!in_array($valor, $validar)){
+                if(!in_array($valor, $validar, true)){
                     throw new \InvalidArgumentException("O campo '{$atributo}' está com um valor invalido");
                 }
                 break;

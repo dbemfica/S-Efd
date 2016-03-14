@@ -2,7 +2,7 @@
 namespace SEfd\Writer;
 
 
-class BlocoDItens
+class BlocoDItens extends Item
 {
     /*
      * Número sequencial do item no documento fiscal
@@ -10,13 +10,6 @@ class BlocoDItens
      * @param int
      */
     private $numeroItem;
-
-    /*
-     * Código do item (campo 02 do Registro 0200)
-     * Atributo (Obrigatório)
-     * @param string
-     */
-    private $codigoItem;
 
     /*
      * Código de classificação do item do serviço de comunicação ou de telecomunicação, conforme a Tabela 4.4.1

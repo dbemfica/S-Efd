@@ -247,8 +247,8 @@ class D500
                 break;
 
             case 'NUM_DOC':
-                if( $valor > 0 ){
-                    throw new \InvalidArgumentException("'NUM_DOC' o valor informado no campo deve ser maior que “0”");
+                if( $valor < 0 ){
+                    throw new \InvalidArgumentException("'NUM_DOC' o valor informado no campo deve ser maior que '0'");
                 }
                 if( strlen($valor) > 9 ){
                     throw new \InvalidArgumentException("O campo '{$atributo}' não pode ter mais que 9 carácter");

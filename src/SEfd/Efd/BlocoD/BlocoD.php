@@ -1,11 +1,13 @@
 <?php
 namespace SEfd\Efd\BlocoD;
 
+use SEfd\Efd\Efd;
+
 class BlocoD
 {
     public $D001;
     public $D500 = array();
-    public $D990 = array();
+    public $D990;
 
     public function addD001(D001 $d001)
     {
@@ -94,7 +96,7 @@ class BlocoD
     /*
      * Esse metodo valida as informações presentes no Registro D500
      */
-    public function validateD500(\SEfd\Efd\Efd $efd, D500 $d500)
+    public function validateD500(Efd $efd, D500 $d500)
     {
         //return true;
 
@@ -121,8 +123,11 @@ class BlocoD
     /*
      * Esse metodo valida as informações presentes no Registro D510
      */
-    public function validateD510(\SEfd\Efd\Efd $efd, D510 $d510)
+    public function validateD510(Efd $efd, D510 $d510)
     {
+        $CST_ICMS = $d510->CST_ICMS;
+        $IND_OPER = $efd->blocoD->D500[(count($efd->blocoD->D500)-1)]->IND_OPER;
+        $CFOP = $d510->CFOP;
         $IND_REC = $d510->IND_REC;
         $VL_BC_ICMS = $d510->VL_BC_ICMS;
         $ALIQ_ICMS = $d510->ALIQ_ICMS;
@@ -134,50 +139,108 @@ class BlocoD
         $VL_PIS = $d510->VL_PIS;
         $VL_COFINS = $d510->VL_COFINS;
 
-        if( !empty($VL_DESC) && !is_numeric($VL_DESC) ){
-            throw new \InvalidArgumentException("O campo 'ValorDesconto' precisa der numerico(float)");
+        //VALIDA O NUMERO DE ITENS
+        if (!empty($efd->blocoD->D500[(count($efd->blocoD->D500)-1)]->D510)) {
+            foreach ($efd->blocoD->D500[(count($efd->blocoD->D500)-1)]->D510 as $registro) {
+                $NUM_ITEM[] = $registro->NUM_ITEM;
+            }
+        }
+        if (!empty($NUM_ITEM)) {
+            if (in_array($d510->NUM_ITEM, $NUM_ITEM)) {
+                throw new \InvalidArgumentException("O campo 'numeroItem' não pode se repetir");
+            }
         }
 
+        //VL_BC_ICMS
         if( !empty($VL_BC_ICMS) && !is_numeric($VL_BC_ICMS) ){
             throw new \InvalidArgumentException("O campo 'valorBaseCalculo' precisa der numerico(float)");
         }
-
-        if( !empty($ALIQ_ICMS) && !is_numeric($ALIQ_ICMS) ){
-            throw new \InvalidArgumentException("O campo 'aliquotaICMS' precisa der numerico(float)");
-        }
-
-        if( !empty($VL_ICMS) && !is_numeric($VL_ICMS) ){
-            throw new \InvalidArgumentException("O campo 'valorICMS' precisa der numerico(float)");
-        }
-
-        if( !empty($VL_BC_ICMS_UF) && !is_numeric($VL_BC_ICMS_UF) ){
-            throw new \InvalidArgumentException("O campo 'valorBaseCalculoUF' precisa der numerico(float)");
-        }
-
-        if( !empty($VL_ICMS_UF) && !is_numeric($VL_ICMS_UF) ){
-            throw new \InvalidArgumentException("O campo 'valorICMSUF' precisa der numerico(float)");
-        }
-
-        if( !empty($VL_PIS) && !is_numeric($VL_PIS) ){
-            throw new \InvalidArgumentException("O campo 'valorPIS' precisa der numerico(float)");
-        }
-
-        if( !empty($VL_COFINS) && !is_numeric($VL_COFINS) ){
-            throw new \InvalidArgumentException("O campo 'valorCOFINS' precisa der numerico(float)");
-        }
-
         if( $IND_REC == 1 && $VL_BC_ICMS != 0 ){
             throw new \InvalidArgumentException("O campo 'valorBaseCalculo' deve ser igual a '0' (zero) caso o valor do Campo 'indicadorReceita' seja 1");
         }
 
+        //ALIQ_ICMS
+        if( !empty($ALIQ_ICMS) && !is_numeric($ALIQ_ICMS) ){
+            throw new \InvalidArgumentException("O campo 'aliquotaICMS' precisa der numerico(float)");
+        }
         if( ( $IND_REC == 1 || $IND_REC == 5 || $IND_REC == 9 ) && $ALIQ_ICMS != 0 ){
             throw new \InvalidArgumentException("O campo 'aliquotaICMS' deve ser igual a '0' (zero) caso o valor do Campo 'indicadorReceita' seja 1, 5 ou 9");
         }
 
+        //VL_ICMS
+        if( !empty($VL_ICMS) && !is_numeric($VL_ICMS) ){
+            throw new \InvalidArgumentException("O campo 'valorICMS' precisa der numerico(float)");
+        }
         if( ( $IND_REC == 1 || $IND_REC == 5 || $IND_REC == 9 ) && $VL_ICMS != 0 ){
             throw new \InvalidArgumentException("O campo 'valorICMS' deve ser igual a '0' (zero) caso o valor do Campo 'indicadorReceita' seja 1, 5 ou 9");
         }
 
+        //VL_DESC
+        if( !empty($VL_DESC) && !is_numeric($VL_DESC) ){
+            throw new \InvalidArgumentException("O campo 'ValorDesconto' precisa der numerico(float)");
+        }
+
+        //VL_BC_ICMS_UF
+        if( !empty($VL_BC_ICMS_UF) && !is_numeric($VL_BC_ICMS_UF) ){
+            throw new \InvalidArgumentException("O campo 'valorBaseCalculoUF' precisa der numerico(float)");
+        }
+
+        //VL_ICMS_UF
+        if( !empty($VL_ICMS_UF) && !is_numeric($VL_ICMS_UF) ){
+            throw new \InvalidArgumentException("O campo 'valorICMSUF' precisa der numerico(float)");
+        }
+
+        //VL_PIS
+        if( !empty($VL_PIS) && !is_numeric($VL_PIS) ){
+            throw new \InvalidArgumentException("O campo 'valorPIS' precisa der numerico(float)");
+        }
+
+        //VL_COFINS
+        if( !empty($VL_COFINS) && !is_numeric($VL_COFINS) ){
+            throw new \InvalidArgumentException("O campo 'valorCOFINS' precisa der numerico(float)");
+        }
+
+        //CFOP
+        if ($IND_OPER == 0 && (substr($CFOP,0,1) != '1' && substr($CFOP,0,1) != '2' && substr($CFOP,0,1) != '3')) {
+            throw new \InvalidArgumentException("CFOP inválido. Utilizar CFOP com primeiro caracter = 1, 2 ou 3, quando for operação de entrada");
+        }
+
+        if ($IND_OPER == 1 && (substr($CFOP,0,1) != '5' && substr($CFOP,0,1) != '6' && substr($CFOP,0,1) != '7')) {
+            throw new \InvalidArgumentException("CFOP inválido. Utilizar CFOP com primeiro caracter = 5, 6 ou 7, quando for operação de saída.");
+        }
+
+        //CST_ICMS
+        if ( substr($CST_ICMS,-2) == '30' || substr($CST_ICMS,-2) == '40' || substr($CST_ICMS,-2) == '41' || substr($CST_ICMS,-2) == '50' || substr($CST_ICMS,-2) == '60') {
+            if ( $VL_BC_ICMS != 0 ) {
+                throw new \InvalidArgumentException("O campo 'valorBaseCalculo' deve ser igual a '0' (zero)");
+            }
+            if ( $ALIQ_ICMS != 0 ) {
+                throw new \InvalidArgumentException("O campo 'aliquotaICMS' deve ser igual a '0' (zero)");
+            }
+            if ( $VL_ICMS != 0 ) {
+                throw new \InvalidArgumentException("O campo 'valorICMS' deve ser igual a '0' (zero)");
+            }
+        }else{
+            if ( $VL_BC_ICMS > 1 ) {
+                if ( $ALIQ_ICMS < 0 ) {
+                    throw new \InvalidArgumentException("O campo 'aliquotaICMS' deve ser igual a '0' (zero)");
+                }
+                if ( $VL_ICMS < 0 ) {
+                    throw new \InvalidArgumentException("O campo 'valorICMS' deve ser igual a '0' (zero)");
+                }
+            }
+        }
+        if ( substr($CST_ICMS,-2) == '20' || substr($CST_ICMS,-2) == '51' || substr($CST_ICMS,-2) == '90') {
+            if ( $VL_BC_ICMS < 0 ) {
+                throw new \InvalidArgumentException("O campo 'aliquotaICMS' deve ser igual a '0' (zero)");
+            }
+            if ( $ALIQ_ICMS < 0 ) {
+                throw new \InvalidArgumentException("O campo 'aliquotaICMS' deve ser igual a '0' (zero)");
+            }
+            if ( $VL_ICMS < 0 ) {
+                throw new \InvalidArgumentException("O campo 'valorICMS' deve ser igual a '0' (zero)");
+            }
+        }
         return true;
     }
 }
