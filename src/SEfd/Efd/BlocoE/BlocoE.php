@@ -2,6 +2,7 @@
 namespace SEfd\Efd\BlocoE;
 
 use SEfd\Efd\Efd;
+use SEfd\Efd\Tabelas\TReceitasRecolher;
 
 class BlocoE
 {
@@ -150,5 +151,55 @@ class BlocoE
         $e110->DEB_ESP = 0;
 
         $this->addE110($e110);
+    }
+
+    /*
+     * Essa função monta o registro E116
+     */
+    public function makeE116(Efd $efd, $COD_OR = '000', $DT_VCTO = NULL, $MES_REF = NULL)
+    {
+        if ($DT_VCTO === NULL) {
+            $DT_VCTO = $efd->bloco0->_0000->DT_FIN;
+        }
+        if ($MES_REF === NULL) {
+            $MES_REF = substr($efd->bloco0->_0000->DT_FIN,2,6);
+        }
+//        if ($efd->blocoD->D500->codigoObrigacoesICMS != '') {
+//            $COD_REC = $efd->blocoD->D500->codigoObrigacoesICMS;
+//        }
+
+        $e116 = new E116();
+        $e116->COD_OR = $COD_OR;
+        $e116->VL_OR = $efd->blocoE->E110->VL_ICMS_RECOLHER + $efd->blocoE->E110->DEB_ESP;
+        $e116->DT_VCTO = $DT_VCTO;
+        $e116->COD_REC = NULL;
+        $e116->NUM_PROC = NULL;
+        $e116->IND_PROC = NULL;
+        $e116->PROC = NULL;
+        $e116->TXT_COMPL = NULL;
+        $e116->MES_REF = $MES_REF;
+
+        if($this->validadeE116($efd, $e116)){
+            $this->addE116($e116);
+        }
+    }
+
+    /*
+     * Essa função valida o registro E116
+     */
+    private function validadeE116(Efd $efd, E116 $e116)
+    {
+        if ($e116->NUM_PROC != '') {
+            if ($e116->IND_PROC == '') {
+                throw new \InvalidArgumentException("O campo 'IND_PROC' não pode estar vazio");
+            }
+            if ($e116->PROC == '') {
+                throw new \InvalidArgumentException("O campo 'PROC' não pode estar vazio");
+            }
+        }
+//        if (!TReceitasRecolher::isCodigo($efd->bloco0->_0000->UF, $e116->COD_REC)) {
+//            throw new \InvalidArgumentException("O campo 'COD_REC' está com um valor invalido");
+//        }
+        return true;
     }
 }

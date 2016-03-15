@@ -88,4 +88,9 @@ class DocumentoFiscal
      * @param string
      */
     public $bairro;
+
+    /*
+     * Código da obrigação a recolher, conforme a Tabela 5.4
+     */
+    public $codigoObrigacoesICMS;
 }

@@ -1,0 +1,78 @@
+<?php
+namespace SEfd\Efd\Tabelas;
+
+/**
+ * Class TReceitasRecolher
+ * @package SEfd\Efd\Tabelas
+ * TABELA DE CÓDIGOS DE RECEITAS PARA RECOLHER GA
+ */
+abstract class TReceitasRecolher
+{
+    private static $RS = [
+        '0057' => 'ICMS - DIVIDA ATIVA REFERENTE A ICM/ICMS',
+        '0211' => 'ICMS - OUTROS PAGAMENTOS ANTECIPADOS',
+        '0212' => 'ICMS - PAGAMENTO ANTECIPADO DE PRODUTOR',
+        '0213' => 'ICMS - PAGAMENTO DE PRODUTOR',
+        '0214' => 'ICMS - PAGAMENTO ANTECIPADO DE CARNE E GADO',
+        '0217' => 'ICMS - MODALIDADE GERAL - COMERCIO - PAGAMENTO FORA DO PRAZO',
+        '0218' => 'ICMS - MODALIDADE GERAL - INDUSTRIA - PAGAMENTO FORA DO PRAZO',
+        '0220' => 'ICMS - COMPLEMENTAÇÃO NAS OPERAÇÕES COM VEÍCULOS',
+        '0221' => 'ICMS - IMP S/OPER. RELAT. CIRC. DE MERC E S/PREST DE SERV TRANSP INTEREST. E INTERMUN. E COMUNIC- MOD GERAL - COM.',
+        '0222' => 'ICMS - IMP S/OPER RELAT A CIRC DE MERC E S/PREST. SERV DE TRANSP. INTEREST E INTERMUN E COMUNIC - MOD GERAL- IND.',
+        '0223' => 'ICMS - DENUNCIA ESPONTÂNEA DE INFRAÇÃO',
+        '0224' => 'ICMS - SUBSTITUIÇÃO TRIBUTARIA INTERESTADUAL',
+        '0225' => 'ICMS - MICROEMPRESA E MICROPRODUTOR RURAL',
+        '0226' => 'ICMS - SERVIÇOS',
+        '0227' => 'ICMS - PAGAMENTO ANTECIPADO NAS ENTRADAS DE MERCADORIAS ORIUNDAS DE OUTRAS UNIDADES DA FEDERAÇÃO, EFETUADO POR EMPRESA MODALIDADE GERAL',
+        '0228' => 'ICMS - PAGAMENTO ANTECIPADO DE SERVIÇOS',
+        '0229' => 'ICMS - RESPONSABILIDADE POR SUBSTITUIÇÃO TRIBUTARIA DE SERVIÇOS DE TRANSPORTE',
+        '0231' => 'ICMS - DEPÓSITO REFERENTE AO DESCUMPRIMENTO DE OBRIGAÇÃO TRIBUTÁRIA MATERIAL NO TRÂNSITO DE MERCADORIA',
+        '0233' => 'ICMS - IMPORTAÇÃO DE MERCADORIA ESTRANGEIRA',
+        '0234' => 'ICMS – PAGAMENTO ANTECIPADO INOB. – LEI COMPLEMENTAR 24/75',
+        '0236' => 'ICMS - CARNE E GADO - PAGAMENTO FORA DE PRAZO',
+        '0238' => 'ICMS - ACAO FISCAL - PAG. INT - TERMO APREENSÃO (TA)/TERMO DE INFR TRANS (TIT) - MICROEMPR.,MICROPR RURAL, EMPR PEQ PORTE',
+        '0256' => 'ICMS - ACAO FISCAL - PAGAMENTO INTEGRAL E PARCELADO',
+        '0270' => 'ICMS - SUBSTITUIÇÃO TRIBUTARIA INTERNA',
+        '0280' => 'ICMS - IMPORTAÇÃO OU ARREMATACAO DE MERCADORIA ESTRANGEIRA – PAGAMENTO NO DESEMBARAÇO ADUANEIRO',
+        '0285' => 'ICMS - EMPRESA DE PEQUENO PORTE',
+        '0291' => 'ICMS – SUBSTITUIÇÃO TRIBUTÁRIA – IMPORT. COMBUSTÍVEIS',
+        '0312' => 'ICMS - SUBSTITUIÇÃO TRIBUTÁRIA PARA MERCADORIAS EM ESTOQUE',
+        '0379' => 'ICMS – PAGAMENTO ANTECIPADO NAS ENTRADAS DE MERCADORIAS ORIUNDAS DE OUTRAS UNIDADES DA FEDERAÇÃO, EFETUADO POR EMPRESA NO REGIME DE TRIBUTAÇÃO SIMPLES NACIONAL',
+        '0684' => 'ICMS – DENÚNCIA ESPONTÂNEA – PROGRAMA AJUSTAR',
+        '0995' => 'ICMS - ESTORNO ETANOL ANIDRO-CONVÊNIO ICMS 110/2007',
+        '0996' => 'ICMS - ESTORNO BIODIESEL-CONVÊNIO 110/2007',
+        '0998' => 'ICMS – OPERAÇÕES INTERNAS PRODUTOS FARMACÊUTICOS RECEBIDOS A TÍTULO DE BONIFICAÇÃO',
+        '0999' => 'ICMS – SUBSTITUIÇÃO TRIBUTÁRIA – INTERESTADUAL OU IMPORTAÇÃO – POR OPERAÇÃO',
+        '1007' => 'ICMS – LIMINAR SINDILOJAS POA',
+        '1510' => 'ICMS – CONSUMIDOR FINAL NÃO CONTRIBUINTE OUTRA UF POR OPERAÇÃO',
+        '1511' => 'ICMS – CONSUMIDOR FINAL NÃO CONTRIBUINTE OUTRA UF POR APURAÇÃO',
+        '1512' => 'ICMS - AMPARA FUNDO ESTADUAL DE COMBATE À POBREZA POR OPERAÇÃO',
+        '1513' => 'ICMS - AMPARA FUNDO ESTADUAL DE COMBATE À POBREZA POR APURAÇÃO',
+        '1514' => 'ICMS - AMPARA SUBSTITUIÇÃO TRIBUTÁRIA FUNDO DE COMBATE À POBREZA',
+        '100013' => 'ICMS Comunicação',
+        '100021' => 'ICMS Energia Elétrica',
+        '100030' => 'ICMS Transporte',
+        '100048' => 'ICMS Substituição Tributária por Apuração',
+        '100056' => 'ICMS Importação',
+        '100080' => 'ICMS Recolhimentos Especiais',
+        '100099' => 'ICMS Subst. Tributária por Operação',
+        '100102' => 'ICMS Consumidor Final não contribuinte outra UF por Operação',
+        '100110' => 'ICMS Consumidor Final não contribuinte outra UF por Apuração',
+        '100129' => 'ICMS Fundo Estadual de Combate à Pobreza por Operação',
+        '100137' => 'ICMS Fundo Estadual de Combate à Pobreza por Apuração'
+    ];
+
+    /**
+     * Valida se o codigo passado está presente no registro
+     */
+    public static function isCodigo($uf,$codigo)
+    {
+        foreach( self::$$uf as $chave => $valor ){
+            $codigos[] = $chave;
+        }
+        if( in_array($codigo, $codigos) ){
+            return true;
+        }
+        return false;
+    }
+}

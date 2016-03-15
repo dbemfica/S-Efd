@@ -28,7 +28,7 @@ class T54
         foreach( self::$registros as $chave => $valor ){
             $codigos[] = $chave;
         }
-        if( in_array($codigo, $codigos) ){
+        if( in_array($codigo, $codigos, true) ){
             return true;
         }
         return false;

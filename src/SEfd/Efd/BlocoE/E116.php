@@ -126,14 +126,19 @@ class E116
                 break;
 
             case 'IND_PROC':
-                if( $valor !== 0 && $valor !== 1 && $valor !== 2 && $valor !== 9 ){
-                    throw new \InvalidArgumentException("O campo '{$atributo}' só pode ter valores 0,1,2 ou 9");
+                if (!empty($valor)) {
+                    if( $valor !== 0 && $valor !== 1 && $valor !== 2 && $valor !== 9 ){
+                        throw new \InvalidArgumentException("O campo '{$atributo}' só pode ter valores 0,1,2 ou 9");
+                    }
                 }
+
                 break;
 
             case 'MES_REF':
-                if( strlen($valor) != 6 ){
-                    throw new \InvalidArgumentException("O campo '{$atributo}' só pode ter 6 caracteres");
+                if (!empty($valor)) {
+                    if( strlen($valor) != 6 ){
+                        throw new \InvalidArgumentException("O campo '{$atributo}' só pode ter 6 caracteres");
+                    }
                 }
                 break;
         }

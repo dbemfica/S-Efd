@@ -252,7 +252,6 @@ class SEfd
      */
     private $motivoInventario;
 
-
     public function __get($atributo)
     {
         return $this->$atributo;

@@ -1,7 +1,6 @@
 <?php
 require_once "../vendor/autoload.php";
 
-
 $sefd = new SEfd\Sefd();
 $sefd->versaoLeiaute = '010';
 $sefd->codigoFinalidade = 0;
@@ -30,6 +29,7 @@ $sefd->indicadorAtividade = 1;
 
 $blocoD = new \SEfd\Writer\BlocoD();
 $blocoD->codigoModelo = '21';
+$blocoD->codigoObrigacoesICMS = '0057';
 $blocoD->codigoParitcipante = '1';
 $blocoD->numeroDocumento = 1;
 $blocoD->indicadorOperacao = 1;

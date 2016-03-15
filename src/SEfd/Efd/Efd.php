@@ -14,14 +14,14 @@ use SEfd\Efd\Bloco9\Bloco9;
 class Efd
 {
     public $bloco0;
-    private $blocoC;
+    public $blocoC;
     public $blocoD;
-    private $blocoE;
-    private $blocoG;
-    private $blocoH;
-    private $blocoK;
-    private $bloco1;
-    private $bloco9;
+    public $blocoE;
+    public $blocoG;
+    public $blocoH;
+    public $blocoK;
+    public $bloco1;
+    public $bloco9;
     private $_9999;
     private $file;
 
@@ -175,6 +175,8 @@ class Efd
                     $d500->VL_COFINS = $bloco->valorCOFINS;
                     $d500->COD_CTA = $bloco->codigoContaContabil;
                     $d500->TP_ASSINANTE = $bloco->codigoTipoAssinante;
+
+                    $d500->codigoObrigacoesICMS = $bloco->codigoObrigacoesICMS;
                     try{
                         if( $bloco->codigoInformacaoComplementar != '' ){
                             $this->bloco0->make0450($bloco->codigoInformacaoComplementar, $bloco->informacaoComplementar);
@@ -258,9 +260,13 @@ class Efd
             $e001->IND_MOV = 0;
             $this->blocoE->addE001($e001);
             $this->blocoE->makeE100($this->bloco0->_0000->DT_INI,$this->bloco0->_0000->DT_FIN);
-            $this->blocoE->makeE110($this);
+            $this->blocoE->makeE110($this, $sefd->codigoObrigacoesICMS);
+            $this->blocoE->makeE116($this);
             $this->blocoE->makeE990();
         }
+//        echo "<pre>";
+//        print_r($this->blocoE);
+//        echo "</pre>";
     }
 
     /*
@@ -547,6 +553,12 @@ class Efd
                 $_9900->QTD_REG_BLC = count($this->blocoE->E110);
                 $bloco9->add9900($_9900);
             }
+            if( !empty($this->blocoE->E116) ){
+                $_9900 = new \SEfd\Efd\Bloco9\_9900();
+                $_9900->REG_BLC = 'E116';
+                $_9900->QTD_REG_BLC = count($this->blocoE->E116);
+                $bloco9->add9900($_9900);
+            }
             if( !empty($this->blocoE->E990) ){
                 $_9900 = new \SEfd\Efd\Bloco9\_9900();
                 $_9900->REG_BLC = 'E990';
@@ -728,6 +740,9 @@ class Efd
         $this->_9999 = $_9999;
     }
 
+    /*
+     * Esse metodo monta o arquivo TXT
+     */
     public function montarEfd()
     {
         // BLOCO 0
