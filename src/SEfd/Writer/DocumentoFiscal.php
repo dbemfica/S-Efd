@@ -3,9 +3,51 @@ namespace SEfd\Writer;
 
 class DocumentoFiscal
 {
+
     /*
-     * Código de identificação do participante no arquivo.
-     * Atributo (Obrigatório)
+     * Indicador do tipo de operação:
+     * 0- Aquisição;
+     * 1- Prestação
+     * Atributo (Obrigatório) para Entrada
+     * Atributo (Obrigatório) para Saida
+     * @param int
+     */
+    public $indicadorOperacao;
+
+    /*
+     * Indicador do emitente do documento fiscal:
+     * 0- Emissão própria;
+     * 1- Terceiros
+     * Atributo (Obrigatório) para Entrada
+     * Atributo (Obrigatório) para Saida
+     * @param int
+     */
+    public $indicadorEmitente;
+
+    /*
+     * Código do modelo do documento fiscal, conforme a Tabela 4.1.1
+     * Atributo (Obrigatório) para Entrada
+     * Atributo (Obrigatório) para Saida
+     * @param string
+     */
+    public $codigoModelo;
+
+    /*
+     * Código da situação do documento fiscal, conforme a Tabela 4.1.2
+     * Atributo (Obrigatório) para Entrada
+     * Atributo (Obrigatório) para Saida
+     * @param string
+     */
+    public $codigoSituacao;
+
+
+
+    /*
+     * Código do participante (campo 02 do Registro 0150):
+     * - do prestador do serviço, no caso de aquisição;
+     * - do tomador do serviço, no caso de prestação.
+     * Atributo (Obrigatório) para Entrada
+     * Atributo (Obrigatório) para Saida
      * @param string
      */
     public $codigoParticipanete;
@@ -80,7 +122,7 @@ class DocumentoFiscal
      * Atributo (Opcional)
      * @param string
      */
-    public $completo;
+    public $complemento;
 
     /*
      * Bairro em que o imóvel está situado

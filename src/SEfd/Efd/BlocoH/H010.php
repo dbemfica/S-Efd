@@ -121,6 +121,9 @@ class H010
                 if( !is_numeric($valor) ){
                     throw new \InvalidArgumentException("O campo '{$atributo}' precisa ser um número");
                 }
+                if( $valor < 0 ){
+                    throw new \InvalidArgumentException("O campo '{$atributo}' precisa ter valor maior que zero");
+                }
                 $v = explode(".",$valor);
                 if( isset($v[1]) && strlen($v[1]) > 3 ){
                     throw new \InvalidArgumentException("O campo '{$atributo}' não pode ter um decimal maior que 3");

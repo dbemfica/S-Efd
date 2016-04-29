@@ -16,6 +16,7 @@ class Bloco0
     public $_0150 = array();
     public $_0190 = array();
     public $_0200 = array();
+    public $_0400 = array();
     public $_0450 = array();
     public $_0460 = array();
     public $_0990;
@@ -47,17 +48,26 @@ class Bloco0
             $this->_0150[] = $_0150;
         }
     }
+    public function add0190(_0190 $_0190)
+    {
+        foreach ($this->_0190 as $u) {
+            $UNID[] = $u->UNID;
+        }
+        if(@!in_array($_0190->UNID, $UNID)){
+            if ( $this->validate0190($_0190) ) {
+                $this->_0190[] = $_0190;
+            }
+        }
+    }
     public function add0200(_0200 $_0200)
     {
         if( $this->validate0200($_0200) ){
             $this->_0200[] = $_0200;
         }
     }
-    public function add0190(_0190 $_0190)
+    public function add0400(_0400 $_0400)
     {
-        if(!in_array($_0190, $this->_0190)){
-            $this->_0190[] = $_0190;
-        }
+        $this->_0400[] = $_0400;
     }
     public function add0450(_0450 $_0450)
     {
@@ -74,7 +84,7 @@ class Bloco0
     public function make0150(DocumentoFiscal $bloco)
     {
         $_0150 = new _0150();
-        $_0150->COD_PART = $bloco->codigoParticipanete;
+        $_0150->COD_PART = $bloco->codigoParticipante;
         $_0150->NOME = $bloco->nome;
         $_0150->COD_PAIS = $bloco->codigoPais;
         $_0150->CNPJ = $bloco->CNPJ;
@@ -101,8 +111,8 @@ class Bloco0
         }
 
         $_0190 = new _0190();
-        $_0190->UNID = $unidade;
-        $_0190->DESCR = $descricao;
+        $_0190->UNID = strtoupper($unidade);
+        $_0190->DESCR = strtoupper($descricao);
         $this->add0190($_0190);
     }
 
@@ -196,7 +206,7 @@ class Bloco0
         }
 
         if ($_0150->COD_PART == '') {
-            throw new \InvalidArgumentException("O 'codigoParticipanete' não pode ser vazio");
+            throw new \InvalidArgumentException("O 'codigoParticipante' não pode ser vazio");
         }
 
         if($_0150->COD_PAIS != 1058 && $_0150->CNPJ != ''){
@@ -225,6 +235,17 @@ class Bloco0
 
         if($_0150->END == ''){
             throw new \InvalidArgumentException("O campo Endereco deve ser preenchidos");
+        }
+        return true;
+    }
+
+    /*
+     * Esse metodo valida as informações presentes no Registro 0190
+     */
+    public function validate0190(_0190 $_0190)
+    {
+        if ( $_0190-UNID == $_0190->DESCR ) {
+            throw new \InvalidArgumentException("A Descrição da Unidade não pode ser igual ao seu código");
         }
         return true;
     }

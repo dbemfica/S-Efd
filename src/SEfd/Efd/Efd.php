@@ -10,6 +10,7 @@ use SEfd\Efd\BlocoH\BlocoH;
 use SEfd\Efd\BlocoK\BlocoK;
 use SEfd\Efd\Bloco1\Bloco1;
 use SEfd\Efd\Bloco9\Bloco9;
+use SEfd\SEfd;
 
 class Efd
 {
@@ -125,6 +126,135 @@ class Efd
             $this->blocoC->addC001($c001);
 
             $this->blocoC->makeC990();
+        }else{
+            $c001 = new \SEfd\Efd\BlocoC\C001();
+            $c001->IND_MOV = 0;
+            $this->blocoC->addC001($c001);
+
+            //MODELO
+            $blocos = $sefd->blocoC;
+
+            foreach( $blocos as $bloco){
+                $c100 = new \SEfd\Efd\BlocoC\C100();
+                $c100->IND_OPER = $bloco->indicadorOperacao;
+                $c100->IND_EMIT = $bloco->indicadorEmitente;
+                $c100->COD_PART = $bloco->codigoParticipante;
+                $c100->COD_MOD = $bloco->codigoModelo;
+                $c100->COD_SIT = $bloco->codigoSituacao;
+                $c100->SER = $bloco->serie;
+                $c100->NUM_DOC = $bloco->numeroDocumento;
+                $c100->CHV_NFE = $bloco->chaveNFE;
+                $c100->DT_DOC = $bloco->dataEmissao;
+                $c100->DT_E_S = $bloco->dataEntradaSaida;
+                $c100->VL_DOC = $bloco->valorDocumento;
+                $c100->IND_PGTO = $bloco->indicadorPagamento;
+                $c100->VL_DESC = $bloco->valorDesconto;
+                $c100->VL_ABAT_NT = $bloco->valorAbatimentoNaoTributado;
+                $c100->VL_MERC = $bloco->valorMercadoria;
+                $c100->IND_FRT = $bloco->indicadorFrete;
+                $c100->VL_FRT = $bloco->valorFrete;
+                $c100->VL_SEG = $bloco->valorSeguro;
+                $c100->VL_OUT_DA = $bloco->valorOutrasDespesas;
+                $c100->VL_BC_ICMS = $bloco->valorBaseCalculoICMS;
+                $c100->VL_ICMS = $bloco->valorICMS;
+                $c100->VL_BC_ICMS_ST = $bloco->valorBaseCalculoICMSST;
+                $c100->VL_ICMS_ST = $bloco->valorICMSST;
+                $c100->VL_IPI = $bloco->valorIPI;
+                $c100->VL_PIS = $bloco->valorPIS;
+                $c100->VL_COFINS = $bloco->valorCOFINS;
+                $c100->VL_PIS_ST = $bloco->valorPISST;
+                $c100->VL_COFINS_ST = $bloco->valorCOFINSST;
+
+                try{
+                    if( $bloco->codigoParticipante != '' ){
+                        $this->bloco0->make0150($bloco);
+                    }
+//                    if( $this->blocoD->validateD500($this, $d500) ){
+                        $this->blocoC->addC100($c100);
+//                    }
+                }catch(\Exception $e){
+                    exit( $e->getMessage() );
+                }
+
+                if( !empty($bloco->itens) ){
+                    foreach( $bloco->itens as $item ){
+                        $c170 = new \SEfd\Efd\BlocoC\C170();
+                        $c170->NUM_ITEM = $item->numeroItem;
+                        $c170->COD_ITEM = $item->codigoItem;
+                        $c170->DESCR_COMPL = $item->descricaoItem;
+                        $c170->QTD = $item->quantidade;
+                        $c170->UNID = $item->unidade;
+                        $c170->VL_ITEM = $item->valor;
+                        $c170->VL_DESC = $item->valorDesconto;
+                        $c170->IND_MOV = $item->indicadorMovimento;
+                        $c170->CST_ICMS = $item->codigoSituacaoTributaria;
+                        $c170->CFOP = $item->cfop;
+                        $c170->COD_NAT = $item->codigoNatureza;
+                        $c170->VL_BC_ICMS = $item->valorBaseCalculo;
+                        $c170->ALIQ_ICMS = $item->aliquotaICMS;
+                        $c170->VL_ICMS = $item->valorICMS;
+                        $c170->VL_BC_ICMS_ST = $item->valorBaseCalculoST;
+                        $c170->ALIQ_ST = $item->aliquotaICMSST;
+                        $c170->VL_ICMS_ST = $item->valorICMSST;
+                        $c170->IND_APUR = $item->indicadorApuracao;
+                        $c170->CST_IPI = $item->codigoSituacaoIPI;
+                        $c170->COD_ENQ = $item->codigoEnquadramentoIPI;
+                        $c170->VL_BC_IPI = $item->valorBaseCalculoIPI;
+                        $c170->ALIQ_IPI = $item->aliquotoIPI;
+                        $c170->VL_IPI = $item->valorIPI;
+                        $c170->CST_PIS = $item->codigoSituacaoPIS;
+                        $c170->VL_BC_PIS = $item->valorBaseCalculoPIS;
+                        $c170->ALIQ_PIS_P = $item->aliquotoPercentualPIS;
+                        $c170->QUANT_BC_PIS = $item->quantidadeBaseCalculoPIS;
+                        $c170->ALIQ_PIS_R = $item->aliquotoRealPIS;
+                        $c170->VL_PIS = $item->valorPIS;
+                        $c170->CST_COFINS = $item->codigoSituacaoCOFINS;
+                        $c170->VL_BC_COFINS = $item->valorBaseCalculoCOFINS;
+                        $c170->ALIQ_COFINS_P = $item->aliquotoPercentualCOFINS;
+                        $c170->QUANT_BC_COFINS = $item->quantidadeBaseCalculoCOFINS;
+                        $c170->ALIQ_COFINS_R = $item->aliquotoRealCOFINS;
+                        $c170->VL_COFINS = $item->valorCOFINS;
+                        $c170->VL_OPR = $item->valorOperacao;
+                        $c170->COD_CTA = $item->codigoContabil;
+
+                        try{
+                            try{
+                                $this->bloco0->make0190($item->unidade, $item->unidadeDescricao);
+                            }catch(\Exception $e){
+                                exit( $e->getMessage() );
+                            }
+
+                            if ( $c100->IND_OPER == 1 || $c100->IND_EMIT == 1 ) {
+                                try{
+                                    $this->bloco0->make0200($item);
+                                }catch(\Exception $e){
+                                    exit( $e->getMessage() );
+                                }
+                            }
+
+
+                            if ($bloco->codigoParticipante != '') {
+                                $this->bloco0->make0150($bloco);
+                            }elseif ($item->codigoParticipante != '') {
+                                $this->bloco0->make0150($bloco);
+                            }
+
+                            if( $this->blocoC->validateC170($this, $c170) ){
+                                $this->blocoC->addC170($c170);
+                            }
+                        }catch(\Exception $e){
+                            exit( $e->getMessage() );
+                        }
+                    }
+                }
+
+                //REGISTRO C190
+                if ($bloco->codigoObservacao != '') {
+                    $COD_OBS = $this->bloco0->make0460($bloco->codigoObservacao, $bloco->observacao);
+                }
+                $this->blocoC->makeC190($COD_OBS);
+            }
+            $this->blocoC->makeC990();
         }
     }
 
@@ -137,7 +267,6 @@ class Efd
             $d001 = new \SEfd\Efd\BlocoD\D001();
             $d001->IND_MOV = 1;
             $this->blocoD->addD001($d001);
-
             $this->blocoD->makeD990();
 
         }else{
@@ -154,7 +283,7 @@ class Efd
                     $d500 = new \SEfd\Efd\BlocoD\D500();
                     $d500->IND_OPER = $bloco->indicadorOperacao;
                     $d500->IND_EMIT = $bloco->indicadorEmitente;
-                    $d500->COD_PART = $bloco->codigoParitcipante;
+                    $d500->COD_PART = $bloco->codigoParticipante;
                     $d500->COD_MOD = $bloco->codigoModelo;
                     $d500->COD_SIT = $bloco->codigoSituacao;
                     $d500->SER = $bloco->serie;
@@ -255,18 +384,29 @@ class Efd
      */
     private function makeBlocoE(\SEfd\SEfd $sefd)
     {
-        if( empty($sefd->blocoE) ){
-            $e001 = new \SEfd\Efd\BlocoE\E001();
-            $e001->IND_MOV = 0;
-            $this->blocoE->addE001($e001);
-            $this->blocoE->makeE100($this->bloco0->_0000->DT_INI,$this->bloco0->_0000->DT_FIN);
-            $this->blocoE->makeE110($this, $sefd->codigoObrigacoesICMS);
-            $this->blocoE->makeE116($this);
-            $this->blocoE->makeE990();
+//        if( empty($sefd->blocoE) ){
+//            $e001 = new \SEfd\Efd\BlocoE\E001();
+//            $e001->IND_MOV = 1;
+//            $this->blocoE->addE001($e001);
+//            $this->blocoE->makeE116($this);
+//            $this->blocoE->makeE990();
+//        }
+
+        $e001 = new \SEfd\Efd\BlocoE\E001();
+        $e001->IND_MOV = 1;
+        $this->blocoE->addE001($e001);
+
+        //E100
+        if ( $this->blocoE->makeE100($this) ) {
+            $this->blocoE->E001->IND_MOV = 0;
         }
-//        echo "<pre>";
-//        print_r($this->blocoE);
-//        echo "</pre>";
+
+        //E200
+        if ( $this->blocoE->makeE200($this) ) {
+            $this->blocoE->E001->IND_MOV = 0;
+        }
+
+        $this->blocoE->makeE990();
     }
 
     /*
@@ -293,22 +433,15 @@ class Efd
     private function makeBlocoH(\SEfd\SEfd $sefd)
     {
         if( empty($sefd->blocoH) ){
-            $blocoH = new \SEfd\Efd\BlocoH\BlocoH();
-
             $h001 = new \SEfd\Efd\BlocoH\H001();
             $h001->IND_MOV = 1;
-            $blocoH->addH001($h001);
-
-            $blocoH->makeH990();
-            $this->blocoH = $blocoH;
+            $this->blocoH->addH001($h001);
+            $this->blocoH->makeH990();
 
         }else {
-            $bloco0 = $this->bloco0;
-            $blocoH = new \SEfd\Efd\BlocoH\BlocoH();
-
             $h001 = new \SEfd\Efd\BlocoH\H001();
             $h001->IND_MOV = 0;
-            $blocoH->addH001($h001);
+            $this->blocoH->addH001($h001);
 
             $blocos = $sefd->blocoH;
 
@@ -325,36 +458,39 @@ class Efd
                 $h010->COD_CTA = $bloco->codigoContaAnaliticaContabel;
                 $h010->VL_ITEM_IR = $bloco->valorItemImpostoRenda;
                 try{
-                    $blocoH->addH010($h010);
+                    if ($this->blocoH->validadeH010($this,$h010)) {
+                        $this->blocoH->addH010($h010);
+                    }
+                }catch(\Exception $e){
+                    exit( $e->getMessage() );
+                }
+
+                try{
+                    $this->bloco0->make0190($bloco->unidade, $bloco->unidadeDescricao);
+                }catch(\Exception $e){
+                    exit( $e->getMessage() );
+                }
+
+                try{
+                    $this->bloco0->make0200($bloco);
                 }catch(\Exception $e){
                     exit( $e->getMessage() );
                 }
             }
 
+
+
             try{
-                $bloco0->make0190($bloco->unidade, $bloco->unidadeDescricao);
+                $this->blocoH->makeH005($sefd->blocoH[0]->dataInvervalo, $sefd->motivoInventario);
             }catch(\Exception $e){
                 exit( $e->getMessage() );
             }
 
             try{
-                $bloco0->make0200($bloco);
+                $this->blocoH->makeH990();
             }catch(\Exception $e){
                 exit( $e->getMessage() );
             }
-
-            try{
-                $blocoH->makeH005(null, $sefd->motivoInventario);
-            }catch(\Exception $e){
-                exit( $e->getMessage() );
-            }
-
-            try{
-                $blocoH->makeH990();
-            }catch(\Exception $e){
-                exit( $e->getMessage() );
-            }
-            $this->blocoH = $blocoH;
         }
     }
 
@@ -382,15 +518,13 @@ class Efd
     private function makeBloco1(\SEfd\SEfd $sefd)
     {
         if( empty($sefd->bloco1) ){
-            $bloco1 = new \SEfd\Efd\Bloco1\Bloco1();
-
             $_1001 = new \SEfd\Efd\Bloco1\_1001();
-            $_1001->IND_MOV = 1;
-            $bloco1->add1001($_1001);
+            $_1001->IND_MOV = 0;
+            $this->bloco1->add1001($_1001);
 
-            $bloco1->make1990();
-            $this->bloco1 = $bloco1;
+            $this->bloco1->make1010($this);
 
+            $this->bloco1->make1990();
         }
     }
 
@@ -457,6 +591,12 @@ class Efd
                 $_9900->QTD_REG_BLC = count($this->bloco0->_0200);
                 $bloco9->add9900($_9900);
             }
+            if( !empty($this->bloco0->_0400) ){
+                $_9900 = new \SEfd\Efd\Bloco9\_9900();
+                $_9900->REG_BLC = '_0400';
+                $_9900->QTD_REG_BLC = count($this->bloco0->_0400);
+                $bloco9->add9900($_9900);
+            }
             if( !empty($this->bloco0->_0450) ){
                 $_9900 = new \SEfd\Efd\Bloco9\_9900();
                 $_9900->REG_BLC = '0450';
@@ -483,6 +623,31 @@ class Efd
                 $_9900 = new \SEfd\Efd\Bloco9\_9900();
                 $_9900->REG_BLC = 'C001';
                 $_9900->QTD_REG_BLC = count($this->blocoC->C001);
+                $bloco9->add9900($_9900);
+            }
+            if( !empty($this->blocoC->C100) ){
+                $_9900 = new \SEfd\Efd\Bloco9\_9900();
+                $_9900->REG_BLC = 'C100';
+                $_9900->QTD_REG_BLC = count($this->blocoC->C100);
+                $bloco9->add9900($_9900);
+
+                $C170 = 0;
+                $C190 = 0;
+                for( $i = 0; $i < count($this->blocoC->C100); $i++ ){
+                    if ( $this->blocoC->C100[$i]->IND_OPER == 1 || $this->blocoC->C100[$i]->IND_EMIT == 1 && $this->blocoC->C100[$i]->COD_SIT != '06' ) {
+                        $C170 += count($this->blocoC->C100[$i]->C170);
+                    }
+                    $C190 += count($this->blocoC->C100[$i]->C190);
+                }
+
+                $_9900 = new \SEfd\Efd\Bloco9\_9900();
+                $_9900->REG_BLC = 'C170';
+                $_9900->QTD_REG_BLC = $C170;
+                $bloco9->add9900($_9900);
+
+                $_9900 = new \SEfd\Efd\Bloco9\_9900();
+                $_9900->REG_BLC = 'C190';
+                $_9900->QTD_REG_BLC = $C190;
                 $bloco9->add9900($_9900);
             }
             if( !empty($this->blocoC->C990) ){
@@ -541,7 +706,7 @@ class Efd
                 $_9900->QTD_REG_BLC = count($this->blocoE->E001);
                 $bloco9->add9900($_9900);
             }
-            if( !empty($this->blocoE->E001) ){
+            if( !empty($this->blocoE->E100) ){
                 $_9900 = new \SEfd\Efd\Bloco9\_9900();
                 $_9900->REG_BLC = 'E100';
                 $_9900->QTD_REG_BLC = count($this->blocoE->E100);
@@ -557,6 +722,22 @@ class Efd
                 $_9900 = new \SEfd\Efd\Bloco9\_9900();
                 $_9900->REG_BLC = 'E116';
                 $_9900->QTD_REG_BLC = count($this->blocoE->E116);
+                $bloco9->add9900($_9900);
+            }
+            if( !empty($this->blocoE->E200) ){
+                $_9900 = new \SEfd\Efd\Bloco9\_9900();
+                $_9900->REG_BLC = 'E200';
+                $_9900->QTD_REG_BLC = count($this->blocoE->E200);
+                $bloco9->add9900($_9900);
+
+                $E210 = 0;
+                for( $i = 0; $i < count($this->blocoE->E200); $i++ ){
+                    $E210 += count($this->blocoE->E200[$i]->E210);
+                }
+
+                $_9900 = new \SEfd\Efd\Bloco9\_9900();
+                $_9900->REG_BLC = 'E210';
+                $_9900->QTD_REG_BLC = $E210;
                 $bloco9->add9900($_9900);
             }
             if( !empty($this->blocoE->E990) ){
@@ -591,6 +772,24 @@ class Efd
                 $_9900->QTD_REG_BLC = count($this->blocoH->H001);
                 $bloco9->add9900($_9900);
             }
+            if( !empty($this->blocoH->H005) ){
+                $_9900 = new \SEfd\Efd\Bloco9\_9900();
+                $_9900->REG_BLC = 'H005';
+                $_9900->QTD_REG_BLC = count($this->blocoH->H005);
+                $bloco9->add9900($_9900);
+            }
+            if( !empty($this->blocoH->H010) ){
+                $_9900 = new \SEfd\Efd\Bloco9\_9900();
+                $_9900->REG_BLC = 'H010';
+                $_9900->QTD_REG_BLC = count($this->blocoH->H010);
+                $bloco9->add9900($_9900);
+            }
+            if( !empty($this->blocoH->H020) ){
+                $_9900 = new \SEfd\Efd\Bloco9\_9900();
+                $_9900->REG_BLC = 'H020';
+                $_9900->QTD_REG_BLC = count($this->blocoH->H020);
+                $bloco9->add9900($_9900);
+            }
             if( !empty($this->blocoH->H990) ){
                 $_9900 = new \SEfd\Efd\Bloco9\_9900();
                 $_9900->REG_BLC = 'H990';
@@ -621,6 +820,12 @@ class Efd
                 $_9900 = new \SEfd\Efd\Bloco9\_9900();
                 $_9900->REG_BLC = '1001';
                 $_9900->QTD_REG_BLC = count($this->bloco1->_1001);
+                $bloco9->add9900($_9900);
+            }
+            if( !empty($this->bloco1->_1010) ){
+                $_9900 = new \SEfd\Efd\Bloco9\_9900();
+                $_9900->REG_BLC = '1010';
+                $_9900->QTD_REG_BLC = count($this->bloco1->_1010);
                 $bloco9->add9900($_9900);
             }
             if( !empty($this->bloco1->_1990) ){
@@ -671,6 +876,7 @@ class Efd
             if( !empty($this->bloco0->_0150) ){ $QTD_LIN += count($this->bloco0->_0150); }
             if( !empty($this->bloco0->_0190) ){ $QTD_LIN += count($this->bloco0->_0190); }
             if( !empty($this->bloco0->_0200) ){ $QTD_LIN += count($this->bloco0->_0200); }
+            if( !empty($this->bloco0->_0400) ){ $QTD_LIN += count($this->bloco0->_0400); }
             if( !empty($this->bloco0->_0450) ){ $QTD_LIN += count($this->bloco0->_0450); }
             if( !empty($this->bloco0->_0460) ){ $QTD_LIN += count($this->bloco0->_0460); }
             if( !empty($this->bloco0->_0990) ){ $QTD_LIN++; }
@@ -679,6 +885,15 @@ class Efd
         //BLOCO C
         if( !empty($this->blocoC) ){
             if( !empty($this->blocoC->C001) ){ $QTD_LIN++; }
+            if( !empty($this->blocoC->C100) ){
+                $QTD_LIN += count($this->blocoC->C100);
+                for( $i = 0; $i < count($this->blocoC->C100); $i++ ){
+                    if ( $this->blocoC->C100[$i]->IND_OPER == 1 || $this->blocoC->C100[$i]->IND_EMIT == 1 && $this->blocoC->C100[$i]->COD_SIT != '06' ) {
+                        $QTD_LIN += count($this->blocoC->C100[$i]->C170);
+                    }
+                    $QTD_LIN += count($this->blocoC->C100[$i]->C190);
+                }
+            }
             if( !empty($this->blocoC->C990) ){ $QTD_LIN++; }
         }
 
@@ -701,6 +916,12 @@ class Efd
             if( !empty($this->blocoE->E100) ){ $QTD_LIN++; }
             if( !empty($this->blocoE->E110) ){ $QTD_LIN++; }
             if( !empty($this->blocoE->E116) ){ $QTD_LIN++; }
+            if( !empty($this->blocoE->E200) ){
+                $QTD_LIN += count($this->blocoE->E200);
+                for( $i = 0; $i < count($this->blocoE->E200); $i++ ){
+                    $QTD_LIN += count($this->blocoE->E200[$i]->E210);
+                }
+            }
             if( !empty($this->blocoE->E990) ){ $QTD_LIN++; }
         }
 
@@ -713,6 +934,9 @@ class Efd
         //BLOCO H
         if( !empty($this->blocoH) ){
             if( !empty($this->blocoH->H001) ){ $QTD_LIN++; }
+            if( !empty($this->blocoH->H005) ){ $QTD_LIN++; }
+            if( !empty($this->blocoH->H010) ){ $QTD_LIN += count($this->blocoH->H010); }
+            if( !empty($this->blocoH->H020) ){ $QTD_LIN++; }
             if( !empty($this->blocoH->H990) ){ $QTD_LIN++; }
         }
 
@@ -725,6 +949,7 @@ class Efd
         //BLOCO 1
         if( !empty($this->bloco1) ){
             if( !empty($this->bloco1->_1001) ){ $QTD_LIN++; }
+            if( !empty($this->bloco1->_1010) ){ $QTD_LIN++; }
             if( !empty($this->bloco1->_1990) ){ $QTD_LIN++; }
         }
 
@@ -845,6 +1070,14 @@ class Efd
                 $this->file .= "|\r\n";
             }
 
+            //REGISTRO 0400
+            foreach( $this->bloco0->_0400 as $_0400 ){
+                $this->file .= "|{$_0400->REG}";
+                $this->file .= "|{$_0400->COD_NAT}";
+                $this->file .= "|{$_0400->DESCR_NAT}";
+                $this->file .= "|\r\n";
+            }
+
             //REGISTRO 0450
             if( !empty($this->bloco0->_0450) ){
                 foreach( $this->bloco0->_0450 as $_0450 ){
@@ -873,11 +1106,110 @@ class Efd
         }
 
         // BLOCO C
-        if( !empty($this->blocoH) ){
+        if( !empty($this->blocoC) ){
             //REGISTRO C001
             $this->file .= "|{$this->blocoC->C001->REG}";
             $this->file .= "|{$this->blocoC->C001->IND_MOV}";
             $this->file .= "|\r\n";
+
+            //REGISTRO C100
+            if( !empty($this->blocoC->C100) ) {
+                foreach ($this->blocoC->C100 as $c100) {
+                    $this->file .= "|{$c100->REG}";
+                    $this->file .= "|{$c100->IND_OPER}";
+                    $this->file .= "|{$c100->IND_EMIT}";
+                    $this->file .= "|{$c100->COD_PART}";
+                    $this->file .= "|{$c100->COD_MOD}";
+                    $this->file .= "|{$c100->COD_SIT}";
+                    $this->file .= "|{$c100->SER}";
+                    $this->file .= "|{$c100->NUM_DOC}";
+                    $this->file .= "|{$c100->CHV_NFE}";
+                    $this->file .= "|{$c100->DT_DOC}";
+                    $this->file .= "|{$c100->DT_E_S}";
+                    if ( $c100->VL_DOC !== NULL ) { $this->file .= "|". number_format($c100->VL_DOC, 2, ",", "") ."";}else{ $this->file .= "|";}
+                    $this->file .= "|{$c100->IND_PGTO}";
+                    if ( $c100->VL_DESC !== NULL ) { $this->file .= "|". number_format($c100->VL_DESC, 2, ",", "") ."";}else{ $this->file .= "|";}
+                    if ( $c100->VL_ABAT_NT !== NULL ) { $this->file .= "|". number_format($c100->VL_ABAT_NT, 2, ",", "") ."";}else{ $this->file .= "|";}
+                    if ( $c100->VL_MERC !== NULL ) { $this->file .= "|". number_format($c100->VL_MERC, 2, ",", "") ."";}else{ $this->file .= "|";}
+                    $this->file .= "|{$c100->IND_FRT}";
+                    if ( $c100->VL_FRT !== NULL ) { $this->file .= "|". number_format($c100->VL_FRT, 2, ",", "") ."";}else{ $this->file .= "|";}
+                    if ( $c100->VL_SEG !== NULL ) { $this->file .= "|". number_format($c100->VL_SEG, 2, ",", "") ."";}else{ $this->file .= "|";}
+                    if ( $c100->VL_OUT_DA !== NULL ) { $this->file .= "|". number_format($c100->VL_OUT_DA, 2, ",", "") ."";}else{ $this->file .= "|";}
+                    if ( $c100->VL_BC_ICMS !== NULL ) { $this->file .= "|". number_format($c100->VL_BC_ICMS, 2, ",", "") ."";}else{ $this->file .= "|";}
+                    if ( $c100->VL_ICMS !== NULL ) { $this->file .= "|". number_format($c100->VL_ICMS, 2, ",", "") ."";}else{ $this->file .= "|";}
+                    if ( $c100->VL_BC_ICMS_ST !== NULL ) { $this->file .= "|". number_format($c100->VL_BC_ICMS_ST, 2, ",", "") ."";}else{ $this->file .= "|";}
+                    if ( $c100->VL_ICMS_ST !== NULL ) { $this->file .= "|". number_format($c100->VL_ICMS_ST, 2, ",", "") ."";}else{ $this->file .= "|";}
+                    if ( $c100->VL_IPI !== NULL ) { $this->file .= "|". number_format($c100->VL_IPI, 2, ",", "") ."";}else{ $this->file .= "|";}
+                    if ( $c100->VL_PIS !== NULL ) { $this->file .= "|". number_format($c100->VL_PIS, 2, ",", "") ."";}else{ $this->file .= "|";}
+                    if ( $c100->VL_COFINS !== NULL ) { $this->file .= "|". number_format($c100->VL_COFINS, 2, ",", "") ."";}else{ $this->file .= "|";}
+                    if ( $c100->VL_PIS_ST !== NULL ) { $this->file .= "|". number_format($c100->VL_PIS_ST, 2, ",", "") ."";}else{ $this->file .= "|";}
+                    if ( $c100->VL_COFINS_ST !== NULL ) { $this->file .= "|". number_format($c100->VL_COFINS_ST, 2, ",", "") ."";}else{ $this->file .= "|";}
+                    $this->file .= "|\r\n";
+
+                    //REGISTRO C170
+                    if( !empty($c100->C170) && ($c100->IND_OPER == 1 || $c100->IND_EMIT == 1) && $c100->COD_SIT != '06' ) {
+                        foreach ($c100->C170 as $c170) {
+                            $this->file .= "|{$c170->REG}";
+                            $this->file .= "|{$c170->NUM_ITEM}";
+                            $this->file .= "|{$c170->COD_ITEM}";
+                            $this->file .= "|{$c170->DESCR_COMPL}";
+                            $this->file .= "|". number_format($c170->QTD, 5, ",", "") ."";
+                            $this->file .= "|{$c170->UNID}";
+                            $this->file .= "|". number_format($c170->VL_ITEM, 2, ",", "") ."";
+                            $this->file .= "|". number_format($c170->VL_DESC, 2, ",", "") ."";
+                            $this->file .= "|{$c170->IND_MOV}";
+                            $this->file .= "|{$c170->CST_ICMS}";
+                            $this->file .= "|{$c170->CFOP}";
+                            $this->file .= "|{$c170->COD_NAT}";
+                            $this->file .= "|". number_format($c170->VL_BC_ICMS, 2, ",", "") ."";
+                            $this->file .= "|". number_format($c170->ALIQ_ICMS, 2, ",", "") ."";
+                            $this->file .= "|". number_format($c170->VL_ICMS, 2, ",", "") ."";
+                            $this->file .= "|". number_format($c170->VL_BC_ICMS_ST, 2, ",", "") ."";
+                            $this->file .= "|". number_format($c170->ALIQ_ST, 2, ",", "") ."";
+                            $this->file .= "|". number_format($c170->VL_ICMS_ST, 2, ",", "") ."";
+                            $this->file .= "|{$c170->IND_APUR}";
+                            $this->file .= "|{$c170->CST_IPI}";
+                            $this->file .= "|{$c170->COD_ENQ}";
+                            $this->file .= "|". number_format($c170->VL_BC_IPI, 2, ",", "") ."";
+                            $this->file .= "|". number_format($c170->ALIQ_IPI, 2, ",", "") ."";
+                            $this->file .= "|". number_format($c170->VL_IPI, 2, ",", "") ."";
+                            $this->file .= "|{$c170->CST_PIS}";
+                            $this->file .= "|". number_format($c170->VL_BC_PIS, 2, ",", "") ."";
+                            $this->file .= "|". number_format($c170->ALIQ_PIS_P, 2, ",", "") ."";
+                            $this->file .= "|". number_format($c170->QUANT_BC_PIS, 3, ",", "") ."";
+                            $this->file .= "|". number_format($c170->ALIQ_PIS_R, 4, ",", "") ."";
+                            $this->file .= "|". number_format($c170->VL_PIS, 2, ",", "") ."";
+                            $this->file .= "|{$c170->CST_COFINS}";
+                            $this->file .= "|". number_format($c170->VL_BC_COFINS, 2, ",", "") ."";
+                            $this->file .= "|". number_format($c170->ALIQ_COFINS_P, 4, ",", "") ."";
+                            $this->file .= "|". number_format($c170->QUANT_BC_COFINS, 3, ",", "") ."";
+                            $this->file .= "|". number_format($c170->ALIQ_COFINS_R, 4, ",", "") ."";
+                            $this->file .= "|". number_format($c170->VL_COFINS, 2, ",", "") ."";
+                            $this->file .= "|{$c170->COD_CTA}";
+                            $this->file .= "|\r\n";
+                        }
+                    }
+
+                    //REGISTRO C190
+                    if( !empty($c100->C190) ) {
+                        foreach ($c100->C190 as $c190) {
+                            $this->file .= "|{$c190->REG}";
+                            $this->file .= "|{$c190->CST_ICMS}";
+                            $this->file .= "|{$c190->CFOP}";
+                            $this->file .= "|". number_format($c190->ALIQ_ICMS, 2, ",", "") ."";
+                            $this->file .= "|". number_format($c190->VL_OPR, 2, ",", "") ."";
+                            $this->file .= "|". number_format($c190->VL_BC_ICMS, 2, ",", "") ."";
+                            $this->file .= "|". number_format($c190->VL_ICMS, 2, ",", "") ."";
+                            $this->file .= "|". number_format($c190->VL_BC_ICMS_ST, 2, ",", "") ."";
+                            $this->file .= "|". number_format($c190->VL_ICMS_ST, 2, ",", "") ."";
+                            $this->file .= "|". number_format($c190->VL_RED_BC, 2, ",", "") ."";
+                            $this->file .= "|". number_format($c190->VL_IPI, 2, ",", "") ."";
+                            $this->file .= "|{$c190->COD_OBS}";
+                            $this->file .= "|\r\n";
+                        }
+                    }
+                }
+            }
 
             //REGISTRO C990
             $this->file .= "|{$this->blocoC->C990->REG}";
@@ -1024,6 +1356,39 @@ class Efd
                 $this->file .= "|\r\n";
             }
 
+            //REGISTRO E200
+            if (!empty($this->blocoE->E200)) {
+                foreach ($this->blocoE->E200 as $e200) {
+                    $this->file .= "|{$e200->REG}";
+                    $this->file .= "|{$e200->UF}";
+                    $this->file .= "|{$e200->DT_INI}";
+                    $this->file .= "|{$e200->DT_FIN}";
+                    $this->file .= "|\r\n";
+
+                    //REGISTRO E210
+                    if( !empty($e200->E210) ) {
+                        foreach ($e200->E210 as $e210) {
+                            $this->file .= "|{$e210->REG}";
+                            $this->file .= "|{$e210->IND_MOV_ST}";
+                            $this->file .= "|". number_format($e210->VL_SLD_CRED_ANT_ST, 2, ",", "") ."";
+                            $this->file .= "|". number_format($e210->VL_DEVOL_ST, 2, ",", "") ."";
+                            $this->file .= "|". number_format($e210->VL_RESSARC_ST, 2, ",", "") ."";
+                            $this->file .= "|". number_format($e210->VL_OUT_CRED_ST, 2, ",", "") ."";
+                            $this->file .= "|". number_format($e210->VL_AJ_CREDITOS_ST, 2, ",", "") ."";
+                            $this->file .= "|". number_format($e210->VL_RETENÇAO_ST, 2, ",", "") ."";
+                            $this->file .= "|". number_format($e210->VL_OUT_DEB_ST, 2, ",", "") ."";
+                            $this->file .= "|". number_format($e210->VL_AJ_DEBITOS_ST, 2, ",", "") ."";
+                            $this->file .= "|". number_format($e210->VL_SLD_DEV_ANT_ST, 2, ",", "") ."";
+                            $this->file .= "|". number_format($e210->VL_DEDUCOES_ST, 2, ",", "") ."";
+                            $this->file .= "|". number_format($e210->VL_ICMS_RECOL_ST, 2, ",", "") ."";
+                            $this->file .= "|". number_format($e210->VL_SLD_CRED_ST_TRANSPORTAR, 2, ",", "") ."";
+                            $this->file .= "|". number_format($e210->DEB_ESP_ST, 2, ",", "") ."";
+                            $this->file .= "|\r\n";
+                        }
+                    }
+                }
+            }
+
             //REGISTRO E990
             $this->file .= "|{$this->blocoE->E990->REG}";
             $this->file .= "|{$this->blocoE->E990->QTD_LIN_E}";
@@ -1103,6 +1468,21 @@ class Efd
             $this->file .= "|{$this->bloco1->_1001->IND_MOV}";
             $this->file .= "|\r\n";
 
+            //REGISTRO 1010
+            if (!empty($this->bloco1->_1010)) {
+                $this->file .= "|{$this->bloco1->_1010->REG}";
+                $this->file .= "|{$this->bloco1->_1010->IND_EXP}";
+                $this->file .= "|{$this->bloco1->_1010->IND_CCRF}";
+                $this->file .= "|{$this->bloco1->_1010->IND_COMB}";
+                $this->file .= "|{$this->bloco1->_1010->IND_USINA}";
+                $this->file .= "|{$this->bloco1->_1010->IND_VA}";
+                $this->file .= "|{$this->bloco1->_1010->IND_EE}";
+                $this->file .= "|{$this->bloco1->_1010->IND_CART}";
+                $this->file .= "|{$this->bloco1->_1010->IND_FORM}";
+                $this->file .= "|{$this->bloco1->_1010->IND_AER}";
+                $this->file .= "|\r\n";
+            }
+
             //REGISTRO 1990
             $this->file .= "|{$this->bloco1->_1990->REG}";
             $this->file .= "|{$this->bloco1->_1990->QTD_LIN_1}";
@@ -1145,6 +1525,17 @@ class Efd
     {
         $this->montarEfd();
         header('Content-type: text/plain');
+        echo $this->file;
+    }
+
+    /*
+     * Esse metodo faz o download do TXT
+     */
+    public function saveTxt()
+    {
+        $this->montarEfd();
+        header('Content-type: text/xml');
+        header('Content-Disposition: attachment; filename="EFD-'.date("Y-m-d H-i-s").'.txt"');
         echo $this->file;
     }
 }

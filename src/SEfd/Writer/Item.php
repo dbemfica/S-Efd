@@ -71,7 +71,6 @@ abstract class Item
      */
     public $codigoGeneroItem;
 
-
     /*
      * Código do serviço conforme lista do Anexo I da Lei Complementar Federal nº 116/03.
      * Atributo (Opcional)

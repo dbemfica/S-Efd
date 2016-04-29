@@ -237,6 +237,7 @@ class SEfd
 
 
     //BLOCOS
+    public $blocoC = array();
     public $blocoD = array();
     public $blocoH = array();
 
@@ -262,6 +263,11 @@ class SEfd
         $this->$atributo = $valor;
     }
 
+    public function addBlocoC(\SEfd\Writer\BlocoC $blocoC)
+    {
+        $this->blocoC[] = $blocoC;
+    }
+
     public function addBlocoD(\SEfd\Writer\BlocoD $blocoD)
     {
         $this->blocoD[] = $blocoD;
@@ -280,5 +286,15 @@ class SEfd
         $efd = new Efd\Efd();
         $efd->makeEfd($this);
         $efd->printTxt();
+    }
+
+    /*
+     * Esse metodo faz o download do TXT
+     */
+    public function saveTxt()
+    {
+        $efd = new Efd\Efd();
+        $efd->makeEfd($this);
+        $efd->saveTxt();
     }
 }

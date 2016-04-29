@@ -4,6 +4,8 @@ namespace SEfd\Efd\BlocoH;
 /*
 * Inventário Físico
 */
+use SEfd\Efd\Efd;
+
 class BlocoH
 {
     public $H001;
@@ -22,10 +24,6 @@ class BlocoH
     }
     public function addH010(H010 $h010)
     {
-        //VALIDACAO DO IND_PROP
-        if( $h010->IND_PROP === 1 || $h010->IND_PROP === 2 && empty($h010->COD_PART) ){
-            throw new \InvalidArgumentException("Se indicadorPropriedade for preenchido com valor 1 ou 2 (propriedade de terceiros), o campo codigoParticipante será obrigatório.");
-        }
         $this->H010[] = $h010;
     }
     public function addH020(H020 $h020)
@@ -69,5 +67,19 @@ class BlocoH
         $h990 = new H990();
         $h990->QTD_LIN_H = $QTD_LIN_H;
         $this->H990 = $h990;
+    }
+
+    public function validadeH010(Efd $efd, H010 $h010)
+    {
+        //VALIDACAO DO IND_PROP
+        if ($h010->IND_PROP === 1 || $h010->IND_PROP === 2 && empty($h010->COD_PART)) {
+            throw new \InvalidArgumentException("Se indicadorPropriedade for preenchido com valor 1 ou 2 (propriedade de terceiros), o campo codigoParticipante será obrigatório.");
+        }
+        if ($efd->bloco0->_0000->IND_PERFIL === 'A' || $efd->bloco0->_0000->IND_PERFIL === 'B' ) {
+            if ($h010->COD_CTA == '') {
+                throw new \InvalidArgumentException("Se Perfil for A ou B o campo 'codigoContaAnaliticaContabel' não pode estar vazio");
+            }
+        }
+        return true;
     }
 }

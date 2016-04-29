@@ -4,6 +4,12 @@ namespace SEfd\Writer;
 class BlocoH extends Item
 {
     /*
+     * Data do inventário
+     * Campo Obrigatório
+     */
+    private $dataInvervalo;
+
+    /*
      * Unidade do item
      * Atributo (Obrigatório)
      * @param string

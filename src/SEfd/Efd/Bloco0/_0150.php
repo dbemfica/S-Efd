@@ -2,6 +2,7 @@
 namespace SEfd\Efd\Bloco0;
 
 use \SEfd\Efd\Tabelas\T321;
+use SEfd\Efd\Tabelas\TCodMunicipio;
 
 class _0150
 {
@@ -151,8 +152,8 @@ class _0150
                 break;
 
             case 'COD_MUN':
-                if( strlen($valor) > 7 ){
-                    throw new \InvalidArgumentException("O campo '{$atributo}' não pode ter mais que 7 caracteres");
+                if( TCodMunicipio::isCodigoMunicipio($valor) ){
+                    throw new \InvalidArgumentException("No campo '{$atributo}' o valor {$valor} está com valor invalido");
                 }
                 break;
 

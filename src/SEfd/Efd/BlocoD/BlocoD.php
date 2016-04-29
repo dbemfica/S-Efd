@@ -68,7 +68,7 @@ class BlocoD
             $d590->VL_BC_ICMS_UF = $registro['VL_BC_ICMS_UF'];
             $d590->VL_ICMS_UF = $registro['VL_ICMS_UF'];
             $d590->VL_RED_BC = $registro['VL_RED_BC'];
-            $d590->COD_OBS = $registro['COD_OBS'];
+            $d590->COD_OBS = $COD_OBS;
             $this->addD590($d590);
         }
     }

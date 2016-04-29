@@ -30,7 +30,7 @@ $sefd->indicadorAtividade = 1;
 $blocoD = new \SEfd\Writer\BlocoD();
 $blocoD->codigoModelo = '21';
 $blocoD->codigoObrigacoesICMS = '0057';
-$blocoD->codigoParitcipante = '1';
+$blocoD->codigoParticipante = '1';
 $blocoD->numeroDocumento = 1;
 $blocoD->indicadorOperacao = 1;
 $blocoD->indicadorEmitente = 1;
@@ -50,7 +50,7 @@ $blocoD->codigoTipoAssinante = 1;
 $blocoD->dataEmissao = "09032016";
 $blocoD->dataEntradaSaida = "09032016";
 
-$blocoD->codigoParticipanete = '1';
+$blocoD->codigoParticipante = '1';
 $blocoD->nome = 'Diogo';
 $blocoD->CPF = '02282347005';
 $blocoD->endereco = 'Rua a';
